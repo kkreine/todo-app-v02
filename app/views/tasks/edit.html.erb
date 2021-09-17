@@ -1,6 +1,11 @@
-<h1>Editing task</h1>
+<%= link_to 'back', @project, class: 'btn btn-secondary btn-sm mb-1', style: 'background-color:#730101' %>
+<div class="card">
+  <div class="card-body">
+    <h2 class='card-title d-flex justify-content-between mb-4' style="color:#730101">
+      <span><strong>edit task</strong></span>
+    </h2>
 
-<%= render 'form' %>
+    <%= render 'form' %>
+  </div>
+</div>
 
-<%= link_to 'Show', [@task.project, @task] %> |
-<%= link_to 'Back', project_tasks_path(@task.project) %>
