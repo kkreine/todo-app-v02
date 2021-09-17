@@ -1,26 +1,51 @@
-<p id="notice"><%= notice %></p>
+<%= link_to 'back', projects_path, class: 'btn btn-dark btn-sm mb-2', style: 'background-color: #006400' %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @project.name %>
-</p>
+<div class="card">
+  <div class="card-body">
+    <h2 class='card-title d-flex justify-content-between mb-4' style="color:#006400">
+      <span><strong><%= @project.name %></strong></span>
+      <div>
+        <td><%= link_to 'edit', edit_project_task_path(@project), class: 'btn btn-warning', style: 'background-color: #006400' %></td>
+        <td><%= link_to 'delete', @project, method: :delete, class: 'btn btn-danger', style: 'background-color: #006400', data: { confirm: 'are you sure?' } %></td>
+      </div>
+    </h2>
 
-<p>
-  <strong>Description:</strong>
-  <%= @project.description %>
-</p>
+    <h6>new task</h6>
+    <%= form_for([@task.project, @task]) do |f| %>
+      <% if @task.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
 
-<p>
-  <strong>User:</strong>
-  <%= @project.user_id %>
-</p>
+          <ul>
+          <% @task.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+      <div class="input-group">
+        <%= f.text_field :name, class: 'form-control', placeholder: 'enter task :-)' %>
+        <div class="input-group-append">
+          <%= f.submit class: 'btn btn-primary', style: 'background-color: #006400' %>
+        </div>
+      </div>
+    <% end %>
 
-<h1>New task</h1>
+    <h4>tasks</h4>
+    <% @project.tasks.each do |task| %>
+      <div class="card">
+        <div class="card-body">
+          <h6><span class="badge badge-primary"><%= task.status %></span></h6>
+          <h5><%= task.name %></h5>
+          <p><%= task.description %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
 
-<%= render 'tasks/form' %>
+
 
 <h1>Tasks</h1>
 
@@ -41,8 +66,6 @@
       <td><%= task.description %></td>
       <td><%= task.status %></td>
       <td><%= link_to 'Show', [task.project, task] %></td>
-      <td><%= link_to 'Edit', edit_project_task_path(task.project, task) %></td>
-      <td><%= link_to 'Destroy', [task.project, task], method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>
 <% end %>
