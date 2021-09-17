@@ -3,74 +3,59 @@
 <div class="card">
   <div class="card-body">
     <h2 class='card-title d-flex justify-content-between mb-4' style="color:#006400">
-      <span><strong><%= @project.name %></strong></span>
+      <span><strong><%= @project.name.downcase %></strong></span>
       <div>
-        <td><%= link_to 'edit', edit_project_task_path(@project), class: 'btn btn-warning', style: 'background-color: #006400' %></td>
+        <td><%= link_to 'edit', edit_project_task_path(@project), class: 'btn btn-dark', style: 'background-color: #006400' %></td>
         <td><%= link_to 'delete', @project, method: :delete, class: 'btn btn-danger', style: 'background-color: #006400', data: { confirm: 'are you sure?' } %></td>
       </div>
     </h2>
 
-    <h6>new task</h6>
-    <%= form_for([@task.project, @task]) do |f| %>
-      <% if @task.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+    <div class="mb-4">
+      <h6>new task</h6>
+      <%= form_for([@task.project, @task]) do |f| %>
+        <% if @task.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
 
-          <ul>
-          <% @task.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-          </ul>
+            <ul>
+            <% @task.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= f.hidden_field :status, value: 'not-started' %>
+        <div class="input-group">
+          <%= f.text_field :name, class: 'form-control', placeholder: 'enter task :-)' %>
+          <div class="input-group-append">
+            <%= f.submit class: 'btn btn-primary', style: 'background-color: #006400' %>
+          </div>
         </div>
       <% end %>
-
-      <div class="input-group">
-        <%= f.text_field :name, class: 'form-control', placeholder: 'enter task :-)' %>
-        <div class="input-group-append">
-          <%= f.submit class: 'btn btn-primary', style: 'background-color: #006400' %>
-        </div>
-      </div>
-    <% end %>
+    </div>
 
     <h4>tasks</h4>
     <% @project.tasks.each do |task| %>
-      <div class="card">
-        <div class="card-body">
-          <h6><span class="badge badge-primary"><%= task.status %></span></h6>
-          <h5><%= task.name %></h5>
-          <p><%= task.description %></p>
+      <% if task.persisted? %>
+        <div class="card">
+          <div class="card-body mb-0">
+            <div class="d-flex justify-content-between mb-0">
+              <span class="badge badge-<%= task.badge_color %>"><%= task.status %></span>
+              <div>
+                <%= link_to 'edit', edit_project_task_path(task.project, task), class: 'btn btn-secondary btn-sm', style: 'background-color: #006400' %>
+                <%= link_to 'delete', [task.project, task], method: :delete, class: 'btn btn-danger btn-sm', style: 'background-color: #006400', data: { confirm: 'are you sure?' } %>
+              </div>
+            </div>
+            <h5 class='card-title' style="color:#006400">
+              <span><%= task.name %></span>
+            </h5>
+            <p><%= task.description %></p>
+          </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 </div>
 
 
-
-<h1>Tasks</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Status</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @project.tasks.each do |task| %>
-  <% if task.persisted? %>
-    <tr>
-      <td><%= task.name %></td>
-      <td><%= task.description %></td>
-      <td><%= task.status %></td>
-      <td><%= link_to 'Show', [task.project, task] %></td>
-    </tr>
-  <% end %>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Task', new_project_task_path(@project.id) %>

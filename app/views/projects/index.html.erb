@@ -6,11 +6,11 @@
     </h2>
 
   <% @projects.each do |project| %>
-    <%= link_to project do %>
-      <div class="card">
+    <%= link_to project, class: 'text-decoration-none' do %>
+      <div class="card project-card">
         <div class="card-body">
           <h5 class='card-title' style="color:#006400"><%= project.name.downcase %></h5>
-          <p><small><%= project.description %> </small></p>
+          <p style="color:#730101"><strong><small><%= project.description %> </small></strong></p>
         </div>
       </div>
     <% end %>

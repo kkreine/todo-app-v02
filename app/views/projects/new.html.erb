@@ -1,5 +1,14 @@
-<h1>New Project</h1>
+<%= link_to 'back', projects_path, class: 'btn btn-secondary btn-sm mb-1', style: 'background-color:#730101' %>
+
+
+<div class="card">
+  <div class="card-body">
+    <h2 class='card-title d-flex justify-content-between mb-4' style="color:#730101">
+      <span><strong>to do lists</strong></span>
+    </h2>
+  </div>
+</div>
+<h1>new to do list</h1>
 
 <%= render 'form', project: @project %>
 
-<%= link_to 'Back', projects_path %>
